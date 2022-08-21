@@ -4,16 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Jogoteca</title>
+    <link rel="stylesheet" href="../static/bootstrap.css">
 </head>
 <body>
     <div class="container">
       <div class="page-header">
           <h1>{{ titulo }}</h1>
       </div>
-      <form>
+      <form action="/create" method="post">
         <fieldset>
           <div class="form-group">
-            <label for="nome">Name</label>
+            <label for="name">name</label>
             <input type="text" id="name" name="name" class="form-control">
           </div>
           <div class="form-group">
