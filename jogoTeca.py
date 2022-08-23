@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, flash
 
 class Game:
     def __init__(self,name,category,console):
@@ -13,6 +13,7 @@ listGames = [game1,game2,game3]
 
 
 app = Flask(__name__) #RESPONSAVEL POR CRIAR O SERVIDOR ONDE RODA A APLICACAO NA WEB
+app.secret_key = 'alura'
 
 @app.route('/') #responsavel pela criacao do "caminho" na URL
 def index():
@@ -21,6 +22,8 @@ def index():
 
 @app.route('/newGame')
 def newGame():
+    if 'usuario_logado' not in session:
+        return redirect('/login')
     titulo = "Cadastro de Novos GAMES"
     return render_template('newGame.html',titulo = titulo)
 
@@ -36,4 +39,25 @@ def create():
 
     return redirect('/')
 
-app.run(debug=True) #RODA A APLICACAO
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/autenticar',methods=['POST', ])
+def autenticar():
+    if "alohomora" == request.form['senha']:
+        session['usuario_logado'] = request.form['usuario']
+        flash(request.form['usuario'] + " logou com sucesso!")
+        return redirect('/')
+    else:
+        flash('Usuario nao logado!')
+        return redirect('/login')
+
+@app.route('/logout')
+def logout():
+    session['usuario_logado'] = None
+    flash("Logout efetuado com sucesso!")
+    return redirect('/')
+
+
+app.run(debug=True)
