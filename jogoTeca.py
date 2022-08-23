@@ -22,11 +22,10 @@ def index():
 
 @app.route('/newGame')
 def newGame():
-    if 'usuario_logado' not in session:
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
         return redirect('/login')
     titulo = "Cadastro de Novos GAMES"
     return render_template('newGame.html',titulo = titulo)
-
 
 @app.route('/create',methods=['POST',])
 def create():
