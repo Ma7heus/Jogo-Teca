@@ -10,6 +10,19 @@ game1 = Game("Tetris","Puzzle","Atari")
 game2 = Game("God of War","Hack n Alash","PS2")
 game3 = Game("Mortal Kombat","Luta","PS2")
 listGames = [game1,game2,game3]
+class Usuario:
+    def __init__(self,nome,nickname,senha):
+        self.nome = nome
+        self.nickname = nickname
+        self.senha = senha
+
+usuario1 = Usuario("Matheus Biasi", "mhb","tesudo")
+usuario1 = Usuario("Laura Weber", "gata","minhadeusa")
+usuario3 = Usuario("Diego Bandeira", "Didi","corno")
+
+usuarios = { usuario1.nickname : usuario1,
+             usuario2.nickname : usuario2,
+             usuario3.nickname : usuario3 }
 
 
 app = Flask(__name__) #RESPONSAVEL POR CRIAR O SERVIDOR ONDE RODA A APLICACAO NA WEB
@@ -45,11 +58,13 @@ def login():
 
 @app.route('/autenticar',methods=['POST', ])
 def autenticar():
-    if "alohomora" == request.form['senha']:
-        session['usuario_logado'] = request.form['usuario']
-        flash(request.form['usuario'] + " logou com sucesso!")
-        proxima_pagina = request.form['proxima']
-        return redirect(proxima_pagina)
+    if request.form['usuario'] in usuarios:
+        usuario = usuarios[request.form['usuario']]
+        if request.form['senha'] == usuario.senha:
+            session['usuario_logado'] = usuario.nickname
+            flash(usuario.nickname['usuario'] + " logado com sucesso!")
+            proxima_pagina = request.form['proxima']
+            return redirect(proxima_pagina)
     else:
         flash('Usuario nao logado!')
         return redirect(url_for('login'))
